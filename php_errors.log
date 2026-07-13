@@ -1,0 +1,18 @@
+[23-Jun-2026 20:29:05 Europe/Berlin] === STARTING AI DETECTION ===
+[23-Jun-2026 20:29:05 Europe/Berlin] Sending Groq request with API key: gsk_FXaLhY...
+[23-Jun-2026 20:29:05 Europe/Berlin] === API CALL DEBUG ===
+[23-Jun-2026 20:29:05 Europe/Berlin] {"url":"https:\/\/api.groq.com\/openai\/v1\/chat\/completions","http_code":200,"curl_error":"","response_preview":"{\"id\":\"chatcmpl-951fafc6-cc76-43cf-9214-8186265097ec\",\"object\":\"chat.completion\",\"created\":1782239345,\"model\":\"llama-3.1-8b-instant\",\"choices\":[{\"index\":0,\"message\":{\"role\":\"assistant\",\"content\":\"85\"},\"logprobs\":null,\"finish_reason\":\"stop\"}],\"usage\":{\"queue_time\":0.049984989,\"prompt_tokens\":260,\"prompt_time\":0.01778337,\"completion_tokens\":2,\"completion_time\":0.007526502,\"total_tokens\":262,\"total_time\":0.025309872},\"usage_breakdown\":null,\"system_fingerprint\":\"fp_4387d3edbb\",\"x_groq\":{\"id\":\"req_01"}
+[23-Jun-2026 20:29:05 Europe/Berlin] Groq response code: 200
+[23-Jun-2026 20:29:05 Europe/Berlin] Groq raw response: 85
+[23-Jun-2026 20:29:05 Europe/Berlin] Groq parsed score: 85
+[23-Jun-2026 20:29:05 Europe/Berlin] Final AI probability: 85
+[23-Jun-2026 20:29:05 Europe/Berlin] === AI DETECTION COMPLETE ===
+[23-Jun-2026 20:32:02 Europe/Berlin] === STARTING AI DETECTION ===
+[23-Jun-2026 20:32:02 Europe/Berlin] Sending Groq request with API key: gsk_FXaLhY...
+[23-Jun-2026 20:32:02 Europe/Berlin] === API CALL DEBUG ===
+[23-Jun-2026 20:32:02 Europe/Berlin] {"url":"https:\/\/api.groq.com\/openai\/v1\/chat\/completions","http_code":200,"curl_error":"","response_preview":"{\"id\":\"chatcmpl-218015dc-642e-4fcc-b94a-8278fff2f96d\",\"object\":\"chat.completion\",\"created\":1782239522,\"model\":\"llama-3.1-8b-instant\",\"choices\":[{\"index\":0,\"message\":{\"role\":\"assistant\",\"content\":\"85\"},\"logprobs\":null,\"finish_reason\":\"stop\"}],\"usage\":{\"queue_time\":0.158819724,\"prompt_tokens\":407,\"prompt_time\":0.023376026,\"completion_tokens\":2,\"completion_time\":0.007722774,\"total_tokens\":409,\"total_time\":0.0310988},\"usage_breakdown\":null,\"system_fingerprint\":\"fp_7ccc667439\",\"x_groq\":{\"id\":\"req_01k"}
+[23-Jun-2026 20:32:02 Europe/Berlin] Groq response code: 200
+[23-Jun-2026 20:32:02 Europe/Berlin] Groq raw response: 85
+[23-Jun-2026 20:32:02 Europe/Berlin] Groq parsed score: 85
+[23-Jun-2026 20:32:02 Europe/Berlin] Final AI probability: 85
+[23-Jun-2026 20:32:02 Europe/Berlin] === AI DETECTION COMPLETE ===

@@ -1,0 +1,110 @@
+import React, { useState, useEffect } from 'react';
+import './TodoApp.css';
+
+const TodoApp = () => {
+  const [todos, setTodos] = useState([]);
+  const [input, setInput] = useState('');
+  const [currentFilter, setCurrentFilter] = useState('all');
+
+  useEffect(() => {
+    const stored = localStorage.getItem('todos');
+    if (stored) {
+      setTodos(JSON.parse(stored));
+    }
+  }, []);
+
+  useEffect(() => {
+    localStorage.setItem('todos', JSON.stringify(todos));
+  }, [todos]);
+
+  const addNewTodo = () => {
+    if (input.trim() !== '') {
+      const todo = {
+        id: Date.now(),
+        text: input.trim(),
+        completed: false,
+        timestamp: new Date().toISOString()
+      };
+      setTodos([...todos, todo]);
+      setInput('');
+    }
+  };
+
+  const toggleComplete = (id) => {
+    setTodos(todos.map(todo =>
+      todo.id === id ? { ...todo, completed: !todo.completed } : todo
+    ));
+  };
+
+  const removeTodo = (id) => {
+    setTodos(todos.filter(todo => todo.id !== id));
+  };
+
+  const getFilteredList = () => {
+    if (currentFilter === 'active') {
+      return todos.filter(todo => !todo.completed);
+    } else if (currentFilter === 'completed') {
+      return todos.filter(todo => todo.completed);
+    }
+    return todos;
+  };
+
+  const getActiveCount = () => {
+    return todos.filter(todo => !todo.completed).length;
+  };
+
+  return (
+    <div className="todo-app">
+      <h1>Todo List</h1>
+      
+      <div className="input-section">
+        <input
+          type="text"
+          value={input}
+          onChange={(e) => setInput(e.target.value)}
+          onKeyDown={(e) => e.key === 'Enter' && addNewTodo()}
+          placeholder="Add a new task..."
+        />
+        <button onClick={addNewTodo}>Add</button>
+      </div>
+
+      <div className="filter-section">
+        <button 
+          className={currentFilter === 'all' ? 'active' : ''}
+          onClick={() => setCurrentFilter('all')}
+        >
+          All
+        </button>
+        <button 
+          className={currentFilter === 'active' ? 'active' : ''}
+          onClick={() => setCurrentFilter('active')}
+        >
+          Active
+        </button>
+        <button 
+          className={currentFilter === 'completed' ? 'active' : ''}
+          onClick={() => setCurrentFilter('completed')}
+        >
+          Completed
+        </button>
+      </div>
+
+      <ul className="todo-list">
+        {getFilteredList().map(todo => (
+          <li key={todo.id} className={todo.completed ? 'completed' : ''}>
+            <span onClick={() => toggleComplete(todo.id)}>
+              {todo.text}
+            </span>
+            <button onClick={() => removeTodo(todo.id)}>Delete</button>
+          </li>
+        ))}
+      </ul>
+
+      <div className="stats">
+        <span>{getActiveCount()} pending tasks</span>
+      </div>
+    </div>
+  );
+};
+
+export default TodoApp;

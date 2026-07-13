@@ -1,0 +1,21 @@
+Postman is collaborative API platform that used for user testing the APIs connection. 
+Postman provides user-friendly interface for user sending HTTP requests and receive response 
+form the server. This tool is specifically designed for software developers and engineers in 
+developing web services that helps verify API functionality.
+The main functionality is the workspace that able to create request method like GET, 
+POST, PUT and DELETE method. The workspace also provide builder for developer 
+configuring URLs, headers, parameters and body data in JSON format. It also has key features 
+like collections which allow related group requests together and can be run automatically to 
+test the entire workflows. The “Environment” tabs can be used to manage different setups such 
+as allow variables like URLs and passwords to be saved separately for development, testing 
+and production server’s purpose. In addition, the “Tests” tab allows developers to write simple 
+JavaScript code to automatically verify responses. For example, it will check and display 
+successful code status which allow developer to analyse the code through the response. Thus, 
+Postman operation involves creating a new request, configuring its details and provide “Send” 
+button for execution and shown the server’s response. The response includes status codes and 
+body data in a structured panel provided.
+To conclude, Postman offers good values efficiency and collaboration for developers
+test and built their web services. It is highly effective software tools for developers streamlining 
+the API lifecycle as well from design and testing part. Thus, its user-friendly interface and 
+powerful automation capabilities make it an essential tool for ensuring the reliability and 
+performance of web services in modern software development.

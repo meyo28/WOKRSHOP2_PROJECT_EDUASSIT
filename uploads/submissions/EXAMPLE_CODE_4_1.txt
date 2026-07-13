@@ -1,0 +1,256 @@
+const express = require('express');
+const mongoose = require('mongoose');
+const bcrypt = require('bcryptjs');
+const jwt = require('jsonwebtoken');
+const cors = require('cors');
+require('dotenv').config();
+
+const app = express();
+const PORT = process.env.PORT || 5000;
+
+// Middleware
+app.use(cors());
+app.use(express.json());
+
+// Database connection
+mongoose.connect(process.env.MONGODB_URI, {
+  useNewUrlParser: true,
+  useUnifiedTopology: true,
+})
+.then(() => console.log('Connected to MongoDB'))
+.catch(err => console.error('MongoDB connection error:', err));
+
+// User Schema
+const userSchema = new mongoose.Schema({
+  username: { type: String, required: true, unique: true, trim: true },
+  email: { type: String, required: true, unique: true, lowercase: true },
+  password: { type: String, required: true },
+  role: { type: String, enum: ['user', 'admin'], default: 'user' },
+  createdAt: { type: Date, default: Date.now },
+  updatedAt: { type: Date, default: Date.now }
+});
+
+// Pre-save middleware to hash password
+userSchema.pre('save', async function(next) {
+  if (!this.isModified('password')) return next();
+  try {
+    const salt = await bcrypt.genSalt(10);
+    this.password = await bcrypt.hash(this.password, salt);
+    next();
+  } catch (error) {
+    next(error);
+  }
+});
+
+// User model
+const User = mongoose.model('User', userSchema);
+
+// Task Schema
+const taskSchema = new mongoose.Schema({
+  title: { type: String, required: true },
+  description: { type: String },
+  status: { type: String, enum: ['pending', 'in-progress', 'completed'], default: 'pending' },
+  priority: { type: String, enum: ['low', 'medium', 'high'], default: 'medium' },
+  userId: { type: mongoose.Schema.Types.ObjectId, ref: 'User', required: true },
+  dueDate: { type: Date },
+  createdAt: { type: Date, default: Date.now },
+  updatedAt: { type: Date, default: Date.now }
+});
+
+// Pre-save middleware for updatedAt
+taskSchema.pre('save', function(next) {
+  this.updatedAt = new Date();
+  next();
+});
+
+const Task = mongoose.model('Task', taskSchema);
+
+// Authentication middleware
+const authenticateToken = async (req, res, next) => {
+  const authHeader = req.headers['authorization'];
+  const token = authHeader && authHeader.split(' ')[1];
+  
+  if (!token) {
+    return res.status(401).json({ error: 'Access token required' });
+  }
+
+  try {
+    const decoded = jwt.verify(token, process.env.JWT_SECRET);
+    const user = await User.findById(decoded.userId).select('-password');
+    if (!user) {
+      return res.status(401).json({ error: 'User not found' });
+    }
+    req.user = user;
+    next();
+  } catch (error) {
+    return res.status(403).json({ error: 'Invalid or expired token' });
+  }
+};
+
+// Routes
+app.post('/api/auth/register', async (req, res) => {
+  try {
+    const { username, email, password } = req.body;
+    
+    // Validation
+    if (!username || !email || !password) {
+      return res.status(400).json({ error: 'All fields required' });
+    }
+    
+    if (password.length < 6) {
+      return res.status(400).json({ error: 'Password must be at least 6 characters' });
+    }
+
+    const existingUser = await User.findOne({ 
+      $or: [{ email }, { username }] 
+    });
+    
+    if (existingUser) {
+      return res.status(409).json({ 
+        error: 'Username or email already exists' 
+      });
+    }
+
+    const user = new User({ username, email, password });
+    await user.save();
+
+    const token = jwt.sign(
+      { userId: user._id },
+      process.env.JWT_SECRET,
+      { expiresIn: '7d' }
+    );
+
+    res.status(201).json({
+      token,
+      user: {
+        id: user._id,
+        username: user.username,
+        email: user.email,
+        role: user.role
+      }
+    });
+  } catch (error) {
+    console.error('Registration error:', error);
+    res.status(500).json({ error: 'Server error during registration' });
+  }
+});
+
+app.post('/api/auth/login', async (req, res) => {
+  try {
+    const { email, password } = req.body;
+    
+    if (!email || !password) {
+      return res.status(400).json({ error: 'Email and password required' });
+    }
+
+    const user = await User.findOne({ email });
+    if (!user) {
+      return res.status(401).json({ error: 'Invalid credentials' });
+    }
+
+    const isPasswordValid = await bcrypt.compare(password, user.password);
+    if (!isPasswordValid) {
+      return res.status(401).json({ error: 'Invalid credentials' });
+    }
+
+    const token = jwt.sign(
+      { userId: user._id },
+      process.env.JWT_SECRET,
+      { expiresIn: '7d' }
+    );
+
+    res.json({
+      token,
+      user: {
+        id: user._id,
+        username: user.username,
+        email: user.email,
+        role: user.role
+      }
+    });
+  } catch (error) {
+    console.error('Login error:', error);
+    res.status(500).json({ error: 'Server error during login' });
+  }
+});
+
+// Protected routes
+app.use('/api/tasks', authenticateToken);
+
+app.get('/api/tasks', async (req, res) => {
+  try {
+    const tasks = await Task.find({ userId: req.user._id })
+      .sort({ createdAt: -1 });
+    res.json(tasks);
+  } catch (error) {
+    console.error('Get tasks error:', error);
+    res.status(500).json({ error: 'Error retrieving tasks' });
+  }
+});
+
+app.post('/api/tasks', async (req, res) => {
+  try {
+    const { title, description, priority, dueDate } = req.body;
+    
+    if (!title) {
+      return res.status(400).json({ error: 'Title is required' });
+    }
+
+    const task = new Task({
+      title,
+      description,
+      priority,
+      dueDate,
+      userId: req.user._id
+    });
+
+    await task.save();
+    res.status(201).json(task);
+  } catch (error) {
+    console.error('Create task error:', error);
+    res.status(500).json({ error: 'Error creating task' });
+  }
+});
+
+app.put('/api/tasks/:id', async (req, res) => {
+  try {
+    const taskId = req.params.id;
+    const updates = req.body;
+    delete updates._id;
+    delete updates.userId;
+
+    const task = await Task.findOne({ _id: taskId, userId: req.user._id });
+    if (!task) {
+      return res.status(404).json({ error: 'Task not found' });
+    }
+
+    Object.assign(task, updates);
+    await task.save();
+    res.json(task);
+  } catch (error) {
+    console.error('Update task error:', error);
+    res.status(500).json({ error: 'Error updating task' });
+  }
+});
+
+app.delete('/api/tasks/:id', async (req, res) => {
+  try {
+    const task = await Task.findOneAndDelete({ 
+      _id: req.params.id, 
+      userId: req.user._id 
+    });
+    
+    if (!task) {
+      return res.status(404).json({ error: 'Task not found' });
+    }
+    
+    res.json({ message: 'Task deleted successfully' });
+  } catch (error) {
+    console.error('Delete task error:', error);
+    res.status(500).json({ error: 'Error deleting task' });
+  }
+});
+
+app.listen(PORT, () => {
+  console.log(`Server running on port ${PORT}`);
+});

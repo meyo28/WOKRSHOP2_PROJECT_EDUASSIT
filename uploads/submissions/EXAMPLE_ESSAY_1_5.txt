@@ -1,0 +1,11 @@
+Project Description: Room Booking System for UTEM Students
+
+The Room Booking System for UTEM Students is a web-based application developed to simplify the process of searching, booking, and managing student accommodations around Universiti Teknikal Malaysia Melaka (UTeM). The system serves as a centralized platform that connects students who are looking for rental properties with landlords who offer accommodation services.
+
+The system provides two main user roles: Students and Landlords. Students can browse available properties, view detailed information such as rental price, facilities, location, and property descriptions, and submit booking requests directly through the platform. They can also monitor the status of their bookings and receive updates from landlords.
+
+Landlords can register and manage their properties by adding, updating, or removing property listings. They can review booking requests submitted by students and decide whether to accept or reject them. Once a booking process is completed, landlords can update the booking status accordingly.
+
+To improve user experience, the system integrates Google Maps API, allowing students to view property locations and identify accommodations that are conveniently located near the university campus. The application utilizes a RESTful API architecture to facilitate communication between the frontend and backend components, ensuring efficient data management and scalability.
+
+The primary objective of this project is to provide a secure, efficient, and user-friendly platform that streamlines the accommodation search and booking process for UTEM students while helping landlords manage rental properties more effectively.

@@ -1,0 +1,11 @@
+Project Description: HomieStudent Rental System
+
+The HomieStudent Rental System is a web-based platform developed to assist UTeM students in finding suitable off-campus accommodation in a more efficient and organized way. The system is designed to act as a bridge between students seeking rental housing and landlords offering available properties.
+
+Students can use the system to explore various housing options, view detailed property information such as rental cost, location, facilities, and descriptions, and submit booking requests online. This eliminates the need for manual searching and direct negotiations with multiple property owners.
+
+On the landlord side, users are able to register properties, update listing details, and manage incoming booking requests. They can approve or reject student applications based on availability and preference. The system ensures that all listings are properly managed and kept up to date.
+
+An administrative module is included to verify landlord accounts and maintain the reliability of property information displayed in the system. The platform is developed using web technologies and a database system to ensure smooth data handling, secure storage, and fast access.
+
+Overall, the HomieStudent Rental System improves the accommodation search process by making it more structured, convenient, and transparent for both students and landlords.

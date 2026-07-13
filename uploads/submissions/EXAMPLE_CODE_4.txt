@@ -1,0 +1,58 @@
+def reverse_string_using_stack(text):
+    """
+    Reverse a string using stack data structure.
+    Args:
+        text: Input string to reverse
+    Returns:
+        Reversed string
+    """
+    if not isinstance(text, str):
+        raise TypeError("Input must be a string")
+    
+    stack = []
+    # Push all characters onto stack
+    for char in text:
+        stack.append(char)
+    
+    # Pop characters to reverse
+    reversed_text = ""
+    while stack:
+        reversed_text += stack.pop()
+    
+    return reversed_text
+
+def reverse_string_using_slicing(text):
+    """
+    Reverse a string using Python slicing.
+    Args:
+        text: Input string to reverse
+    Returns:
+        Reversed string
+    """
+    if not isinstance(text, str):
+        raise TypeError("Input must be a string")
+    
+    return text[::-1]
+
+def is_palindrome(text):
+    """
+    Check if a string is a palindrome (reads same forwards and backwards).
+    Args:
+        text: Input string to check
+    Returns:
+        True if palindrome, False otherwise
+    """
+    cleaned_text = text.lower().replace(" ", "")
+    return cleaned_text == cleaned_text[::-1]
+
+# Test functions
+test_strings = ["hello", "racecar", "Python", "A man a plan a canal Panama"]
+for s in test_strings:
+    reversed_stack = reverse_string_using_stack(s)
+    reversed_slice = reverse_string_using_slicing(s)
+    palindrome_status = is_palindrome(s)
+    print(f"Original: '{s}'")
+    print(f"Reversed (Stack): '{reversed_stack}'")
+    print(f"Reversed (Slicing): '{reversed_slice}'")
+    print(f"Palindrome: {palindrome_status}")
+    print("-" * 30)

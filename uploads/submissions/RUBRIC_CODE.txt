@@ -1,0 +1,38 @@
+SDLC
+
+Planning → Analysis → Design → Implementation → Maintenance
+
+Requirements Engineering Process
+
+Elicitation → Analysis & Negotiation → Specification → Validation
+
+Purpose of RE
+
+Determine what the system should do before development starts.
+
+Four-Ear Model
+Fact
+Appeal
+Self-Disclosure
+Relationship
+Requirements Engineer Skills
+Analytical Thinking
+Empathy
+Communication
+Conflict Resolution
+Self-Confidence
+Persuasiveness
+Requirements Management
+Identify requirements
+Control changes
+Track requirements
+Simple Exam Question
+
+Q: What are the four activities in Requirements Engineering?
+
+A:
+
+Requirements Elicitation
+Requirements Analysis and Negotiation
+Requirements Specification
+Requirements Validation

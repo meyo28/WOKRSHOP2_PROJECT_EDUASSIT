@@ -1,0 +1,9 @@
+Project Description: HomieStudent Accommodation Management System
+
+HomieStudent is an online accommodation management system designed specifically for UTeM students who are searching for off-campus housing. The system aims to reduce the difficulties students face when looking for suitable rental properties by providing a platform where verified landlords can advertise their available accommodations.
+
+Through the system, students can search and compare rental properties based on price, location, property type, and facilities provided. They can view complete property details and submit booking requests online without needing to contact multiple landlords individually. The system also enables students to track their booking requests and receive notifications regarding booking decisions.
+
+For landlords, the platform offers tools to manage property listings, monitor booking requests, and communicate booking outcomes efficiently. An administrator is responsible for verifying landlord information and ensuring that property details published on the platform are accurate and trustworthy.
+
+The system is developed using web technologies and a database management system to ensure reliable storage and retrieval of information. By digitalizing the accommodation search process, HomieStudent improves accessibility, enhances transparency between students and landlords, and creates a more convenient rental experience for the UTeM community.

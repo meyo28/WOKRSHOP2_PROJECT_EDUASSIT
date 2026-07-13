@@ -1,0 +1,104 @@
+import React, { useState } from 'react';
+import axios from 'axios';
+import './WeatherApp.css';
+
+const WeatherApp = () => {
+  const [city, setCity] = useState('');
+  const [weather, setWeather] = useState(null);
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState(null);
+
+  const fetchWeather = async () => {
+    if (!city.trim()) return;
+    
+    setLoading(true);
+    setError(null);
+    
+    try {
+      const API_KEY = process.env.REACT_APP_WEATHER_API_KEY;
+      const response = await axios.get(
+        `https://api.openweathermap.org/data/2.5/weather`,
+        {
+          params: {
+            q: city,
+            appid: API_KEY,
+            units: 'metric'
+          }
+        }
+      );
+      setWeather(response.data);
+    } catch (err) {
+      setError('City not found. Please try again.');
+      setWeather(null);
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  const handleKeyPress = (e) => {
+    if (e.key === 'Enter') {
+      fetchWeather();
+    }
+  };
+
+  const formatDate = (timestamp) => {
+    return new Date(timestamp * 1000).toLocaleDateString('en-US', {
+      weekday: 'long',
+      year: 'numeric',
+      month: 'long',
+      day: 'numeric'
+    });
+  };
+
+  return (
+    <div className="weather-app">
+      <h1>Weather App</h1>
+      
+      <div className="search-section">
+        <input
+          type="text"
+          value={city}
+          onChange={(e) => setCity(e.target.value)}
+          onKeyPress={handleKeyPress}
+          placeholder="Enter city name..."
+        />
+        <button onClick={fetchWeather}>Search</button>
+      </div>
+
+      {loading && <div className="loading">Loading...</div>}
+      
+      {error && <div className="error">{error}</div>}
+      
+      {weather && (
+        <div className="weather-info">
+          <h2>{weather.name}, {weather.sys.country}</h2>
+          <div className="weather-details">
+            <div className="temperature">
+              <span className="temp">{Math.round(weather.main.temp)}°C</span>
+              <span className="description">{weather.weather[0].description}</span>
+            </div>
+            <div className="additional-info">
+              <div>
+                <span>Feels like: {Math.round(weather.main.feels_like)}°C</span>
+              </div>
+              <div>
+                <span>Humidity: {weather.main.humidity}%</span>
+              </div>
+              <div>
+                <span>Wind: {weather.wind.speed} m/s</span>
+              </div>
+              <div>
+                <span>Pressure: {weather.main.pressure} hPa</span>
+              </div>
+            </div>
+            <div className="date-info">
+              <span>{formatDate(weather.dt)}</span>
+            </div>
+          </div>
+        </div>
+      )}
+    </div>
+  );
+};
+
+export default WeatherApp;

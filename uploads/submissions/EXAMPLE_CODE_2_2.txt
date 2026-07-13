@@ -1,0 +1,38 @@
+def compute_factorial_iterative(n):
+    """
+    Compute factorial using iterative method.
+    Parameters:
+        n: Integer (must be non-negative)
+    Returns:
+        Factorial value
+    """
+    if n < 0:
+        raise Exception("Negative numbers not allowed for factorial")
+    if n == 0:
+        return 1
+    
+    total = 1
+    for i in range(2, n + 1):
+        total = total * i
+    return total
+
+def compute_factorial_recursive(n):
+    """
+    Compute factorial using recursive method.
+    Parameters:
+        n: Integer (must be non-negative)
+    Returns:
+        Factorial value
+    """
+    if n < 0:
+        raise Exception("Negative numbers not allowed for factorial")
+    if n == 0 or n == 1:
+        return 1
+    return n * compute_factorial_recursive(n - 1)
+
+# Testing the factorial functions
+values = [0, 1, 5, 10]
+for value in values:
+    iter_result = compute_factorial_iterative(value)
+    recur_result = compute_factorial_recursive(value)
+    print(f"{value}! = {iter_result} (iterative) | {recur_result} (recursive)")

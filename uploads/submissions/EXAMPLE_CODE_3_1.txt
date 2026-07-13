@@ -1,0 +1,80 @@
+#include <iostream>
+#include <vector>
+#include <algorithm>
+using namespace std;
+
+class GradeCalculator {
+private:
+    string studentId;
+    vector<int> subjectMarks;
+    
+public:
+    void setStudentId(string id) {
+        studentId = id;
+    }
+    
+    void addMark(int mark) {
+        if(mark >= 0 && mark <= 100) {
+            subjectMarks.push_back(mark);
+        } else {
+            cout << "Error: Mark " << mark << " is invalid (0-100 only)" << endl;
+        }
+    }
+    
+    int getTotal() {
+        int total = 0;
+        for(int mark : subjectMarks) {
+            total += mark;
+        }
+        return total;
+    }
+    
+    double getAverage() {
+        if(subjectMarks.empty()) return 0;
+        return (double)getTotal() / subjectMarks.size();
+    }
+    
+    char getGrade() {
+        double avg = getAverage();
+        if(avg > 89) return 'A';
+        if(avg > 79) return 'B';
+        if(avg > 69) return 'C';
+        if(avg > 59) return 'D';
+        return 'F';
+    }
+    
+    void displayReport() {
+        cout << "\n========== GRADE REPORT ==========" << endl;
+        cout << "Student ID: " << studentId << endl;
+        cout << "Number of Subjects: " << subjectMarks.size() << endl;
+        cout << "Total Marks: " << getTotal() << endl;
+        cout << "Average Score: " << getAverage() << endl;
+        cout << "Final Grade: " << getGrade() << endl;
+        cout << "==================================" << endl;
+    }
+};
+
+int main() {
+    GradeCalculator calculator;
+    string id;
+    int subjectCount;
+    
+    cout << "Welcome to Grade Calculator System" << endl;
+    cout << "Enter student ID: ";
+    getline(cin, id);
+    calculator.setStudentId(id);
+    
+    cout << "Enter number of subjects: ";
+    cin >> subjectCount;
+    
+    for(int i = 1; i <= subjectCount; i++) {
+        int marks;
+        cout << "Enter marks for subject " << i << ": ";
+        cin >> marks;
+        calculator.addMark(marks);
+    }
+    
+    calculator.displayReport();
+    
+    return 0;
+}
